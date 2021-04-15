@@ -1,6 +1,13 @@
+var PORT = 3001;
+var ORIGIN = 'http://localhost:3000';
 var app = require('express')();
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http, {
+    cors: {
+        origin: ORIGIN,
+        methods: ["GET", "POST"]
+    }
+});
 // Question Command enum
 var QuestionCommands;
 (function (QuestionCommands) {
@@ -32,6 +39,6 @@ io.on(SocketIOConstants.connection, function (socket) {
     });
 });
 // Server
-http.listen(3000, function () {
-    console.log('Pome server listening on *:3000');
+http.listen(PORT, function () {
+    console.log("Pomme server listening on :" + PORT);
 });

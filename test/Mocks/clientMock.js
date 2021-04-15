@@ -1,7 +1,9 @@
 const io = require('socket.io-client')
-const socket = io("ws://localhost:3000")
+const socket = io("ws://localhost:3001")
 
-socket.emit('answer', { id: '01' }, 'correct')
+console.log('Running mock')
+
+//socket.emit('answer', { id: '01' }, 'correct')
 
 socket.emit('questionCommand', { command: 'nextQuestion' })
 

@@ -1,6 +1,14 @@
+const PORT = 3001;
+const ORIGIN = 'http://localhost:3000';
+
 const app = require('express')();
 const http = require('http').createServer(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http, {
+    cors: {
+        origin: ORIGIN,
+        methods: ["GET", "POST"]
+    }
+});
 
 // TODO define User data
 interface User {
@@ -20,12 +28,12 @@ enum QuestionCommands {
     nextQuestion = 'nextQuestion',
     prevQuestion = 'prevQuestion',
     repeatQuestion = 'repeatQuestion',
-};
+}
 
 // Question Command interface
 interface QuestionMessage {
     command: QuestionCommands;
-};
+}
 
 // Socket IO strings
 enum SocketIOConstants {
@@ -46,7 +54,7 @@ io.on(SocketIOConstants.connection, (socket) => {
     socket.on('questionCommand', (msg: QuestionCommands) => {
         console.log(msg);
         io.emit('questionCommand', { command: 'next' });
-    })
+    });
 
     socket.on(SocketIOConstants.disconnect, () => {
         console.log(`User with id ${socket.id} disconnected`);
@@ -54,6 +62,6 @@ io.on(SocketIOConstants.connection, (socket) => {
 });
 
 // Server
-http.listen(3000, () => {
-    console.log('Pome server listening on *:3000');
+http.listen(PORT, () => {
+    console.log(`Pomme server listening on :${PORT}`);
 });
